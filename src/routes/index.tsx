@@ -17,18 +17,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const clubs = [
-  { name: "AI", tag: "Tech", desc: "Machine learning, LLMs, and intelligent systems." },
-  { name: "Dev", tag: "Tech", desc: "Build web, mobile, and open-source projects together." },
-  { name: "IoT", tag: "Tech", desc: "Sensors, microcontrollers, and connected devices." },
-  { name: "Cyber", tag: "Tech", desc: "Security, CTF challenges, and ethical hacking." },
-  { name: "Badminton", tag: "Sports", desc: "Weekly practice and friendly tournaments." },
-  { name: "Table Tennis", tag: "Sports", desc: "Fast rallies, casual games, and competitions." },
-  { name: "Japanese Society", tag: "Culture", desc: "Language, anime, food, and Japanese culture." },
-  { name: "Board Game", tag: "Leisure", desc: "Strategy, party, and tabletop game nights." },
-  { name: "Media and Entertainment", tag: "Creative", desc: "Photo, video, and event production." },
-  { name: "Speakers", tag: "Skills", desc: "Public speaking, debate, and presentation." },
-];
 
 function Index() {
   return (
@@ -42,12 +30,23 @@ function Index() {
       </header>
       <section className="mx-auto grid max-w-6xl gap-5 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3">
         {clubs.map((c) => (
-          <article key={c.name} className="rounded-xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:shadow-lg">
-            <span className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">{c.tag}</span>
+          <Link
+            key={c.slug}
+            to="/clubs/$clubId"
+            params={{ clubId: c.slug }}
+            className="rounded-xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:shadow-lg"
+          >
+            <span className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
+              {c.tag}
+            </span>
             <h2 className="mt-4 text-xl font-semibold text-card-foreground">{c.name}</h2>
-            <p className="mt-2 text-sm text-muted-foreground">{c.desc}</p>
-          </article>
+            <p className="mt-2 text-sm text-muted-foreground">{c.short}</p>
+            <span className="mt-4 inline-block text-sm font-medium text-primary">
+              View details →
+            </span>
+          </Link>
         ))}
+
       </section>
     </main>
   );
