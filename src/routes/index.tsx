@@ -1,6 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { clubs } from "@/lib/clubs";
+import { AccountActions } from "@/components/account-provider";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
 
@@ -23,6 +25,7 @@ function Index() {
     <main className="min-h-screen bg-background">
       <header className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-12">
+          <div className="mb-6 flex flex-wrap items-center justify-end gap-3"><Button variant="ghost" asChild><Link to="/my-clubs">My clubs</Link></Button><AccountActions /></div>
           <p className="text-sm font-semibold uppercase tracking-widest text-primary">MUICT</p>
           <h1 className="mt-2 text-4xl font-bold text-foreground md:text-5xl">Club Registration</h1>
           <p className="mt-3 text-muted-foreground">Explore {clubs.length} available clubs.</p>

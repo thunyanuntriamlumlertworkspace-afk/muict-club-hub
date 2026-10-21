@@ -10,11 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as MyClubsRouteImport } from './routes/my-clubs'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ClubsClubIdRouteImport } from './routes/clubs.$clubId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyClubsRoute = MyClubsRouteImport.update({
+  id: '/my-clubs',
+  path: '/my-clubs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClubsClubIdRoute = ClubsClubIdRouteImport.update({
@@ -25,27 +43,45 @@ const ClubsClubIdRoute = ClubsClubIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/my-clubs': typeof MyClubsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/clubs/$clubId': typeof ClubsClubIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/my-clubs': typeof MyClubsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/clubs/$clubId': typeof ClubsClubIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/my-clubs': typeof MyClubsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/clubs/$clubId': typeof ClubsClubIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/clubs/$clubId'
+  fullPaths: '/' | '/auth' | '/my-clubs' | '/reset-password' | '/clubs/$clubId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/clubs/$clubId'
-  id: '__root__' | '/' | '/clubs/$clubId'
+  to: '/' | '/auth' | '/my-clubs' | '/reset-password' | '/clubs/$clubId'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/my-clubs'
+    | '/reset-password'
+    | '/clubs/$clubId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  MyClubsRoute: typeof MyClubsRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ClubsClubIdRoute: typeof ClubsClubIdRoute
 }
 
@@ -56,6 +92,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-clubs': {
+      id: '/my-clubs'
+      path: '/my-clubs'
+      fullPath: '/my-clubs'
+      preLoaderRoute: typeof MyClubsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/clubs/$clubId': {
@@ -70,6 +127,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  MyClubsRoute: MyClubsRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ClubsClubIdRoute: ClubsClubIdRoute,
 }
 export const routeTree = rootRouteImport
