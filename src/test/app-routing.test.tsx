@@ -2,7 +2,9 @@ import { QueryClient } from "@tanstack/react-query";
 import { createRouter, rootRouteId } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 
+import { clubs, getClub } from "@/lib/clubs";
 import { routeTree } from "@/routeTree.gen";
+
 
 // Match routes without running loaders or rendering: loaders may need a server or
 // network the test run lacks, and jsdom never loads the stylesheets React waits on.
@@ -14,4 +16,21 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
+
+  it("serves every club page at /clubs/<slug>", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    for (const club of clubs) {
+      const matches = router.matchRoutes(`/clubs/${club.slug}`);
+      expect(matches.at(-1)?.routeId).toBe("/clubs/$clubId");
+    }
+  });
+
+  it("does not treat a non-club path as a club page", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    expect(getClub("no-such-club")).toBeUndefined();
+    expect(clubs.map((c) => c.slug)).not.toContain("no-such-club");
+  });
+
 });
