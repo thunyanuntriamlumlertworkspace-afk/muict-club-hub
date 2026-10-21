@@ -2,7 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { createRouter, rootRouteId } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 
-import { clubs, getClub } from "@/lib/clubs";
+import { clubs } from "@/lib/clubs";
 import { routeTree } from "@/routeTree.gen";
 
 
