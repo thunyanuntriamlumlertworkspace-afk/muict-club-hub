@@ -37,7 +37,7 @@ function ResetPassword() {
     if (error) setError(error.message); else setDone(true);
   }
   return <main className="mx-auto min-h-screen max-w-md px-6 py-12"><h1 className="text-3xl font-bold">Reset password</h1>
-    {done ? <p role="status" className="mt-6 text-primary">Your password has been updated.</p> : ready ? <form onSubmit={submit} className="mt-8 space-y-5">
+    {done ? <p role="status" className="mt-6 text-primary">Your password has been updated.</p> : (ready || (recovery && user)) ? <form onSubmit={submit} className="mt-8 space-y-5">
       <label className="block text-sm">New password<input type="password" autoComplete="new-password" required minLength={8} maxLength={128} value={password} onChange={(e) => setPassword(e.target.value)} className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3" /></label>
       <label className="block text-sm">Confirm password<input type="password" autoComplete="new-password" required maxLength={128} value={confirm} onChange={(e) => setConfirm(e.target.value)} className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3" /></label>
       {error && <p role="alert" className="text-destructive">{error}</p>}<Button disabled={busy} type="submit">{busy ? "Saving…" : "Update password"}</Button>
