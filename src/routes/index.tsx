@@ -1,4 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
+
+import { clubs } from "@/lib/clubs";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
