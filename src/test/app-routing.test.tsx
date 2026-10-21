@@ -26,11 +26,17 @@ describe("App routing", () => {
     }
   });
 
-  it("does not treat a non-club path as a club page", () => {
+  it("rejects a club page for a club that does not exist", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 
-    expect(getClub("no-such-club")).toBeUndefined();
-    expect(clubs.map((c) => c.slug)).not.toContain("no-such-club");
+    const match = router
+      .matchRoutes("/clubs/no-such-club")
+      .at(-1) as { routeId: string; loaders?: Record<string, (args: unknown) => unknown> };
+
+    expect(match.routeId).toBe("/clubs/$clubId");
+    const load = Object.values(match.loaders ?? {})[0];
+    expect(() => load({ params: { clubId: "no-such-club" } })).toThrow(/not found/i);
   });
+
 
 });
