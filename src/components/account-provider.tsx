@@ -6,12 +6,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { LogIn, LogOut } from "lucide-react";
 
-const AccountContext = createContext<{ user: User | null; loading: boolean }>({ user: null, loading: true });
+const AccountContext = createContext<{ user: User | null; loading: boolean; recovery: boolean }>({ user: null, loading: true, recovery: false });
 export const useAccount = () => useContext(AccountContext);
 
 export function AccountProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [recovery, setRecovery] = useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
   useEffect(() => {
@@ -21,6 +22,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       if (active) { setUser(data.user); setLoading(false); }
     };
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") { setRecovery(true); void refreshUser(); return; }
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       if (event === "SIGNED_OUT") { setUser(null); setLoading(false); }
       else { setLoading(true); void refreshUser(); }
@@ -30,7 +32,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     void refreshUser();
     return () => { active = false; subscription.unsubscribe(); };
   }, [queryClient, router]);
-  return <AccountContext.Provider value={{ user, loading }}>{children}</AccountContext.Provider>;
+  return <AccountContext.Provider value={{ user, loading, recovery }}>{children}</AccountContext.Provider>;
 }
 
 export function AccountActions() {

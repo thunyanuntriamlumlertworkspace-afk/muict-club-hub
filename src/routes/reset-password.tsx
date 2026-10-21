@@ -3,6 +3,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { passwordSchema } from "@/lib/registration-schema";
 import { Button } from "@/components/ui/button";
+import { useAccount } from "@/components/account-provider";
 
 export const Route = createFileRoute("/reset-password")({
   head: () => ({ meta: [
@@ -18,6 +19,7 @@ function ResetPassword() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
+  const { recovery, user } = useAccount();
   useEffect(() => {
     const hash = new URLSearchParams(window.location.hash.slice(1));
     if (hash.get("type") === "recovery") {
