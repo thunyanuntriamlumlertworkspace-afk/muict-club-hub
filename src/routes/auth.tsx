@@ -6,9 +6,13 @@ import "@lovable.dev/cloud-auth-js/styles.css";
 import { useAccount } from "@/components/account-provider";
 import { Button } from "@/components/ui/button";
 import { emailSchema, passwordSchema } from "@/lib/registration-schema";
+import { getClub } from "@/lib/clubs";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>): { club?: string } => ({ club: typeof search['club'] === "string" ? search['club'] : undefined }),
+  validateSearch: (search: Record<string, unknown>): { club?: string } => {
+    const club = search['club'];
+    return typeof club === "string" && getClub(club) ? { club } : {};
+  },
   head: () => ({ meta: [
     { title: "Student Sign In — MUICT Clubs" },
     { name: "description", content: "Sign in or create a student account to register for MUICT clubs." },
