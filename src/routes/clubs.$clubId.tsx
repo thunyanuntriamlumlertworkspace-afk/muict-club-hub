@@ -38,17 +38,10 @@ function ClubDetail() {
     <main className="min-h-screen bg-background">
       <header className="border-b border-border">
         <div className="mx-auto max-w-3xl px-6 py-10">
-          <Link
-            to="/clubs/$clubId"
-            params={{ clubId: club.slug }}
-            className="hidden"
-            aria-hidden
-          >
-            {club.name}
-          </Link>
-          <a href="/#clubs" className="text-sm text-primary hover:underline">
+          <Link to="/" className="text-sm text-primary hover:underline">
             ← All clubs
-          </a>
+          </Link>
+
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
               {club.tag}
