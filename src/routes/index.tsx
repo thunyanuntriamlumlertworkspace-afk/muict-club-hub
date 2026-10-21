@@ -1,24 +1,51 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "MUICT Club Registration — Browse Clubs" },
+      { name: "description", content: "Browse and join student clubs at MUICT." },
+      { property: "og:title", content: "MUICT Club Registration" },
+      { property: "og:description", content: "Browse and join student clubs at MUICT." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const clubs = [
+  { name: "AI", tag: "Tech", desc: "Machine learning, LLMs, and intelligent systems." },
+  { name: "Dev", tag: "Tech", desc: "Build web, mobile, and open-source projects together." },
+  { name: "IoT", tag: "Tech", desc: "Sensors, microcontrollers, and connected devices." },
+  { name: "Cyber", tag: "Tech", desc: "Security, CTF challenges, and ethical hacking." },
+  { name: "Badminton", tag: "Sports", desc: "Weekly practice and friendly tournaments." },
+  { name: "Table Tennis", tag: "Sports", desc: "Fast rallies, casual games, and competitions." },
+  { name: "Japanese Society", tag: "Culture", desc: "Language, anime, food, and Japanese culture." },
+  { name: "Board Game", tag: "Leisure", desc: "Strategy, party, and tabletop game nights." },
+  { name: "Media and Entertainment", tag: "Creative", desc: "Photo, video, and event production." },
+  { name: "Speakers", tag: "Skills", desc: "Public speaking, debate, and presentation." },
+];
+
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="min-h-screen bg-background">
+      <header className="border-b border-border">
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <p className="text-sm font-semibold uppercase tracking-widest text-primary">MUICT</p>
+          <h1 className="mt-2 text-4xl font-bold text-foreground md:text-5xl">Club Registration</h1>
+          <p className="mt-3 text-muted-foreground">Explore {clubs.length} available clubs.</p>
+        </div>
+      </header>
+      <section className="mx-auto grid max-w-6xl gap-5 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3">
+        {clubs.map((c) => (
+          <article key={c.name} className="rounded-xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:shadow-lg">
+            <span className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">{c.tag}</span>
+            <h2 className="mt-4 text-xl font-semibold text-card-foreground">{c.name}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">{c.desc}</p>
+          </article>
+        ))}
+      </section>
+    </main>
   );
 }
