@@ -2,11 +2,9 @@ import { QueryClient } from "@tanstack/react-query";
 import { createRouter, rootRouteId } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 
-import { Route as ClubRoute } from "@/routes/clubs.$clubId";
 import { clubs } from "@/lib/clubs";
-
 import { routeTree } from "@/routeTree.gen";
-
+import { Route as ClubRoute } from "@/routes/clubs.$clubId";
 
 // Match routes without running loaders or rendering: loaders may need a server or
 // network the test run lacks, and jsdom never loads the stylesheets React waits on.
@@ -29,12 +27,11 @@ describe("App routing", () => {
   });
 
   it("rejects a club page for a club that does not exist", () => {
-    const load = Route.options.loader as (args: { params: { clubId: string } }) => unknown;
+    const load = ClubRoute.options.loader as (args: { params: { clubId: string } }) => {
+      name: string;
+    };
 
     expect(() => load({ params: { clubId: "no-such-club" } })).toThrow(/not found/i);
     expect(load({ params: { clubId: "ai" } }).name).toBe("AI");
   });
-
-
-
 });
