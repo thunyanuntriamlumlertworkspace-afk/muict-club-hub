@@ -2,8 +2,8 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { clubs } from "@/lib/clubs";
 
-
 export const Route = createFileRoute("/")({
+
   head: () => ({
     meta: [
       { title: "MUICT Club Registration — Browse Clubs" },
@@ -17,8 +17,8 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-
 function Index() {
+
   return (
     <main className="min-h-screen bg-background">
       <header className="border-b border-border">
