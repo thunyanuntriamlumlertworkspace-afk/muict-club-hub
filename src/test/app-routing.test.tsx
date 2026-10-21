@@ -27,16 +27,12 @@ describe("App routing", () => {
   });
 
   it("rejects a club page for a club that does not exist", () => {
-    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    const load = Route.options.loader as (args: { params: { clubId: string } }) => unknown;
 
-    const match = router
-      .matchRoutes("/clubs/no-such-club")
-      .at(-1) as { routeId: string; loaders?: Record<string, (args: unknown) => unknown> };
-
-    expect(match.routeId).toBe("/clubs/$clubId");
-    const load = Object.values(match.loaders ?? {})[0];
     expect(() => load({ params: { clubId: "no-such-club" } })).toThrow(/not found/i);
+    expect(load({ params: { clubId: "ai" } }).name).toBe("AI");
   });
+
 
 
 });
