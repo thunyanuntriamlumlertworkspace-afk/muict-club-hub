@@ -2,6 +2,9 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 
 
 import { getClub } from "@/lib/clubs";
+import { ClubRegistration } from "@/components/club-registration";
+import { AccountActions } from "@/components/account-provider";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/clubs/$clubId")({
   loader: ({ params }) => {
@@ -38,9 +41,10 @@ function ClubDetail() {
     <main className="min-h-screen bg-background">
       <header className="border-b border-border">
         <div className="mx-auto max-w-3xl px-6 py-10">
-          <Link to="/" className="text-sm text-primary hover:underline">
+          <div className="flex flex-wrap items-center justify-between gap-4"><Link to="/" className="text-sm text-primary hover:underline">
             ← All clubs
           </Link>
+          <div className="flex flex-wrap items-center gap-3"><Button asChild variant="ghost"><Link to="/my-clubs">My clubs</Link></Button><AccountActions /></div></div>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
@@ -86,9 +90,7 @@ function ClubDetail() {
           ))}
         </ul>
 
-        <button type="button" disabled className="mt-10 cursor-not-allowed opacity-60">
-          Sign up
-        </button>
+        <ClubRegistration clubSlug={club.slug} clubName={club.name} />
       </section>
     </main>
   );
