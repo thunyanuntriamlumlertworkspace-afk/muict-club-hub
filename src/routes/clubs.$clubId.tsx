@@ -1,5 +1,5 @@
-import { Link } from "@/lib/Link";
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
+
 
 import { getClub } from "@/lib/clubs";
 
