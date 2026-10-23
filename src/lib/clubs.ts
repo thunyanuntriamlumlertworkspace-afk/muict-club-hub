@@ -1,3 +1,5 @@
+export const CLUB_CAPACITY = 35;
+
 export type Club = {
   slug: string;
   name: string;

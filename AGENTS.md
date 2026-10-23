@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 - Keep club catalogue data in the shared club module so browsing, details, and registration validation use the same identifiers.
+- Enforce registration capacity in a database trigger with per-club transaction locks and unique bounded seats; retain unique student/club pairs so concurrent requests and direct inserts cannot bypass limits. Test the applied SQL with PGlite.
 - Store student profiles and registrations in Lovable Cloud; owner-scoped RLS and authenticated server functions protect personal data.
 - Keep browsing and account pages public; private reads on these pages run only after a verified client session, never in public loaders.
 - Use one root account provider for auth events and cache invalidation so identity changes cannot leave another user's registrations visible.
