@@ -19,18 +19,21 @@ export type Database = {
           club_slug: string
           created_at: string
           id: string
+          seat_number: number | null
           user_id: string
         }
         Insert: {
           club_slug: string
           created_at?: string
           id?: string
+          seat_number?: number | null
           user_id: string
         }
         Update: {
           club_slug?: string
           created_at?: string
           id?: string
+          seat_number?: number | null
           user_id?: string
         }
         Relationships: [
@@ -69,7 +72,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_club_availability: {
+        Args: never
+        Returns: {
+          capacity: number
+          club_slug: string
+          registered_count: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
