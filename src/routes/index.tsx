@@ -12,8 +12,8 @@ const searchDefaults = { q: "", category: ALL_CATEGORIES };
 
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>): { q: string; category: string } => ({
-    q: typeof search.q === "string" ? search.q : "",
-    category: typeof search.category === "string" ? search.category : ALL_CATEGORIES,
+    q: typeof search["q"] === "string" ? search["q"] : "",
+    category: typeof search["category"] === "string" ? search["category"] : ALL_CATEGORIES,
   }),
   head: () => ({
     meta: [
@@ -89,7 +89,7 @@ function Index() {
                 <Link
                   key={category}
                   to="/"
-                  search={(prev) => ({ ...prev, category })}
+                  search={{ q: search.q, category }}
                   className={
                     active
                       ? "rounded-full border border-primary bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground"
