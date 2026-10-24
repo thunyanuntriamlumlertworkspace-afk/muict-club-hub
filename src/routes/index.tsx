@@ -52,19 +52,20 @@ function Index() {
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               type="search"
-              value={search.q}
+              value={q}
               maxLength={100}
               placeholder="Search clubs by name or activity…"
               aria-label="Search clubs"
               className="pl-9 pr-9"
-              onChange={(event) =>
+              onChange={(event) => {
+                setQ(event.target.value);
                 navigate({
                   replace: true,
                   search: (prev) => ({ ...prev, q: event.target.value }),
-                })
-              }
+                });
+              }}
             />
-            {search.q !== "" && (
+            {q !== "" && (
               <button
                 type="button"
                 aria-label="Clear search"
