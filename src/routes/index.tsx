@@ -32,8 +32,8 @@ function Index() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: "/" });
   // Local state keeps typing smooth; the URL param is the source of truth.
-  const [q, setQ] = useState(search.q);
-  useEffect(() => setQ(search.q), [search.q]);
+  const [q, setQ] = useState(search.q ?? "");
+  useEffect(() => setQ(search.q ?? ""), [search.q]);
   const query = normalizeClubQuery({ ...search, q });
   const results = filterClubs(query);
   const categories = clubCategories();
