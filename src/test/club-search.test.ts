@@ -38,6 +38,12 @@ describe("Club search and category filter", () => {
     expect(filterClubs({ q: "", category: "nonsense" })).toHaveLength(clubs.length);
   });
 
+  it("treats missing search params as no filter instead of crashing", () => {
+    const partial = {} as { q: string; category: string };
+    expect(normalizeClubQuery(partial)).toEqual({ q: "", category: ALL_CATEGORIES });
+    expect(filterClubs(partial)).toHaveLength(clubs.length);
+  });
+
   it("offers every club category as a filter", () => {
     expect(clubCategories()).toEqual(["Tech", "Sports", "Culture", "Leisure", "Creative", "Skills"]);
   });
