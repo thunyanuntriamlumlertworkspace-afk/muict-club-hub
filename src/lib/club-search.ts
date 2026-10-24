@@ -18,9 +18,11 @@ export function isKnownCategory(category: string, all: Club[] = clubs): boolean 
 
 /** Clamps what a hand-typed URL can carry before it reaches the list. */
 export function normalizeClubQuery(query: ClubQuery, all: Club[] = clubs): ClubQuery {
+  const q = typeof query.q === "string" ? query.q : "";
+  const category = typeof query.category === "string" ? query.category : ALL_CATEGORIES;
   return {
-    q: query.q.trim().slice(0, 100),
-    category: isKnownCategory(query.category, all) ? query.category : ALL_CATEGORIES,
+    q: q.trim().slice(0, 100),
+    category: isKnownCategory(category, all) ? category : ALL_CATEGORIES,
   };
 }
 

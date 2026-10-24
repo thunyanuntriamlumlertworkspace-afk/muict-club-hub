@@ -73,7 +73,7 @@ function AuthPage() {
     finally { setBusy(false); }
   }
   return <main className="mx-auto min-h-screen max-w-md px-6 py-12">
-    <Link to="/" className="text-sm text-primary hover:underline">← All clubs</Link>
+    <Link to="/" search={{ q: "", category: "all" }} className="text-sm text-primary hover:underline">← All clubs</Link>
     <p className="mt-8 text-sm font-semibold text-primary">MUICT CLUBS</p>
     <h1 className="mt-2 text-3xl font-bold">{mode === "signup" ? "Create an account" : mode === "forgot" ? "Reset your password" : "Student sign in"}</h1>
     <form onSubmit={submit} className="mt-8 space-y-5">
