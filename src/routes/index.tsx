@@ -1,7 +1,5 @@
-import { Link, createFileRoute, stripSearchParams, useNavigate } from "@tanstack/react-router";
-import { fallback, zodValidator } from "@tanstack/zod-adapter";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Search, X } from "lucide-react";
-import { z } from "zod";
 
 import { clubs } from "@/lib/clubs";
 import { ALL_CATEGORIES, clubCategories, filterClubs, normalizeClubQuery } from "@/lib/club-search";
@@ -9,18 +7,13 @@ import { AccountActions } from "@/components/account-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const clubSearchSchema = z.object({
-  q: fallback(z.string(), "").default(""),
-  category: fallback(z.string(), ALL_CATEGORIES).default(ALL_CATEGORIES),
-});
-
 const searchDefaults = { q: "", category: ALL_CATEGORIES };
 
 export const Route = createFileRoute("/")({
-  validateSearch: zodValidator(clubSearchSchema),
-  search: {
-    middlewares: [stripSearchParams(searchDefaults)],
-  },
+  validateSearch: (search: Record<string, unknown>): { q: string; category: string } => ({
+    q: typeof search.q === "string" ? search.q : "",
+    category: typeof search.category === "string" ? search.category : ALL_CATEGORIES,
+  }),
   head: () => ({
     meta: [
       { title: "MUICT Club Registration — Browse Clubs" },
