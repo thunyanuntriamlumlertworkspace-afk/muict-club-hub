@@ -7,3 +7,7 @@
 - [x] Enable registration on every club page and verify saved results.
 - [x] Add My clubs with the signed-in user's saved registrations.
 - [x] Add a search box and category filter to the club list, with tests and browser verification.
+- [ ] Move the club catalogue into the database with per-club seat limits and public read access.
+- [ ] Add admin role storage and grant thunyanun.tri@student.mahidol.edu the admin role.
+- [ ] Build the /admin page: add/edit/remove clubs, change seat limits, view and remove registrations.
+- [ ] Update browsing, detail, and My clubs pages to read clubs from the database; update tests; verify in browser.
