@@ -12,8 +12,15 @@ export type Club = {
   founded: number;
   president: string;
   activities: string[];
+  capacity: number;
 };
 
+/**
+ * Seed catalogue mirrored into the database by migration
+ * 0002_clubs_table_and_admin_roles. The live catalogue lives in the
+ * `clubs` table (admins can edit it); this list remains as the seed
+ * reference and as fixtures for tests.
+ */
 export const clubs: Club[] = [
   {
     slug: "ai",
@@ -32,6 +39,7 @@ export const clubs: Club[] = [
       "Hands-on workshops with LLMs and Python",
       "Semester hackathon and demo day",
     ],
+    capacity: CLUB_CAPACITY,
   },
   {
     slug: "dev",
@@ -50,6 +58,7 @@ export const clubs: Club[] = [
       "Open-source contribution nights",
       "Code review and pair programming",
     ],
+    capacity: CLUB_CAPACITY,
   },
   {
     slug: "iot",
@@ -68,6 +77,7 @@ export const clubs: Club[] = [
       "Connected device builds",
       "Smart campus mini-projects",
     ],
+    capacity: CLUB_CAPACITY,
   },
   {
     slug: "cyber",
@@ -86,6 +96,7 @@ export const clubs: Club[] = [
       "Ethical hacking fundamentals",
       "Team entries to national competitions",
     ],
+    capacity: CLUB_CAPACITY,
   },
   {
     slug: "badminton",
@@ -104,6 +115,7 @@ export const clubs: Club[] = [
       "Monthly friendly tournaments",
       "Inter-faculty league",
     ],
+    capacity: CLUB_CAPACITY,
   },
   {
     slug: "table-tennis",
@@ -122,6 +134,7 @@ export const clubs: Club[] = [
       "Internal ranking ladder",
       "End-of-year competition",
     ],
+    capacity: CLUB_CAPACITY,
   },
   {
     slug: "japanese-society",
@@ -140,6 +153,7 @@ export const clubs: Club[] = [
       "Film and anime nights",
       "Cultural food events",
     ],
+    capacity: CLUB_CAPACITY,
   },
   {
     slug: "board-game",
@@ -158,6 +172,7 @@ export const clubs: Club[] = [
       "Strategy and party game library",
       "Game design mini-workshops",
     ],
+    capacity: CLUB_CAPACITY,
   },
   {
     slug: "media-and-entertainment",
@@ -176,6 +191,7 @@ export const clubs: Club[] = [
       "Editing and post-production",
       "Live coverage of campus events",
     ],
+    capacity: CLUB_CAPACITY,
   },
   {
     slug: "speakers",
@@ -194,6 +210,7 @@ export const clubs: Club[] = [
       "Structured debates",
       "Presentation skills clinics",
     ],
+    capacity: CLUB_CAPACITY,
   },
 ];
 
