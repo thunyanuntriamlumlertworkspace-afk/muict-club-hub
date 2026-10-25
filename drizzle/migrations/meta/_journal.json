@@ -15,6 +15,13 @@
       "when": 1792714470748,
       "tag": "0001_enforce_club_capacity",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792910772332,
+      "tag": "0002_clubs_table_and_admin_roles",
+      "breakpoints": true
     }
   ]
 }
