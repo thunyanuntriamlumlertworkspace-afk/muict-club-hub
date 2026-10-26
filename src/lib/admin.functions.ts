@@ -133,6 +133,7 @@ export const saveClub = createServerFn({ method: "POST" })
       activities: data.activities,
       capacity: data.capacity,
     });
+    if (error?.code === "23514") throw new Error("The seat limit cannot be lower than an occupied seat. Remove those registrations first.");
     if (error) throw new Error("Could not save the club. Please try again.");
     return { saved: true };
   });
