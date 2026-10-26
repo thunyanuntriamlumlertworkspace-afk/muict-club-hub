@@ -2,7 +2,9 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { clubs } from "@/lib/clubs";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { clubsQueryOptions } from "@/lib/clubs.functions";
+import { CatalogueError, ClubNotFound } from "@/components/catalogue-error";
 import { ALL_CATEGORIES, clubCategories, filterClubs, normalizeClubQuery } from "@/lib/club-search";
 import { AccountActions } from "@/components/account-provider";
 import { Button } from "@/components/ui/button";
@@ -15,6 +17,9 @@ export const Route = createFileRoute("/")({
     q: typeof search["q"] === "string" ? search["q"] : "",
     category: typeof search["category"] === "string" ? search["category"] : ALL_CATEGORIES,
   }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(clubsQueryOptions),
+  errorComponent: CatalogueError,
+  notFoundComponent: ClubNotFound,
   head: () => ({
     meta: [
       { title: "MUICT Club Registration — Browse Clubs" },
@@ -29,14 +34,15 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { data: clubs } = useSuspenseQuery(clubsQueryOptions);
   const search = Route.useSearch();
   const navigate = useNavigate({ from: "/" });
   // Local state keeps typing smooth; the URL param is the source of truth.
   const [q, setQ] = useState(search.q ?? "");
   useEffect(() => setQ(search.q ?? ""), [search.q]);
-  const query = normalizeClubQuery({ ...search, q });
-  const results = filterClubs(query);
-  const categories = clubCategories();
+  const query = normalizeClubQuery({ ...search, q }, clubs);
+  const results = filterClubs(query, clubs);
+  const categories = clubCategories(clubs);
   const isFiltering = query.q !== "" || query.category !== ALL_CATEGORIES;
 
   return (
@@ -66,10 +72,10 @@ function Index() {
               }}
             />
             {q !== "" && (
-              <button
+              <Button variant="ghost" size="icon"
                 type="button"
                 aria-label="Clear search"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                className="absolute right-1 top-1/2 size-8 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 onClick={() =>
                   navigate({
                     replace: true,
@@ -78,7 +84,7 @@ function Index() {
                 }
               >
                 <X className="h-4 w-4" />
-              </button>
+              </Button>
             )}
           </div>
 

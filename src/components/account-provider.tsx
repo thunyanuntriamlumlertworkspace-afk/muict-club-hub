@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { useRouter, useNavigate, Link } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { amIAdmin } from "@/lib/admin.functions";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -41,6 +43,8 @@ export function AccountActions() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const checkAdmin = useServerFn(amIAdmin);
+  const admin = useQuery({ queryKey: ["admin-access", user?.id], queryFn: () => checkAdmin(), enabled: Boolean(user) && !loading });
   async function signOut() {
     setBusy(true); setError("");
     await queryClient.cancelQueries();
@@ -52,6 +56,7 @@ export function AccountActions() {
   }
   if (loading) return <span className="text-sm text-muted-foreground">Checking account…</span>;
   return <div className="flex flex-wrap items-center gap-3">
+    {user && !loading && admin.data && <Button asChild variant="ghost"><Link to="/admin">Admin</Link></Button>}
     {user ? <><span className="max-w-48 truncate text-sm text-muted-foreground">{user.email}</span><Button variant="outline" disabled={busy} onClick={signOut}><LogOut />Sign out</Button></> : <Button asChild variant="outline"><Link to="/auth"><LogIn />Sign in</Link></Button>}
     {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
   </div>;

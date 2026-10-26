@@ -22,6 +22,20 @@
       "when": 1792910772332,
       "tag": "0002_clubs_table_and_admin_roles",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793021036054,
+      "tag": "0003_admin_club_permissions_and_capacity_updates",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793021146001,
+      "tag": "0004_use_live_catalogue_registration_ids",
+      "breakpoints": true
     }
   ]
 }

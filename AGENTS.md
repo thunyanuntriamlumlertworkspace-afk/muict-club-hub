@@ -9,7 +9,9 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Keep club catalogue data in the shared club module so browsing, details, and registration validation use the same identifiers.
+- Keep the live club catalogue in Lovable Cloud and access it through the shared clubs.functions module; clubs.ts holds shared types and seed fixtures only, so admin edits reach every student page.
+- Keep admin mutations authenticated and verify the role server-side through has_role, with RLS enforcing the same permissions; private student lists must never load in a public loader.
+- Serialize capacity edits with registration inserts using the same per-club lock and reject limits below occupied seats, so edits cannot invalidate existing registrations.
 - Enforce registration capacity in a database trigger with per-club transaction locks and unique bounded seats; retain unique student/club pairs so concurrent requests and direct inserts cannot bypass limits. Test the applied SQL with PGlite.
 - Store student profiles and registrations in Lovable Cloud; owner-scoped RLS and authenticated server functions protect personal data.
 - Keep browsing and account pages public; private reads on these pages run only after a verified client session, never in public loaders.

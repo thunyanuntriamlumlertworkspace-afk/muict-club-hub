@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter, rootRouteId } from "@tanstack/react-router";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { clubs } from "@/lib/clubs";
 import { routeTree } from "@/routeTree.gen";
@@ -26,12 +26,18 @@ describe("App routing", () => {
     }
   });
 
-  it("rejects a club page for a club that does not exist", () => {
-    const load = ClubRoute.options.loader as (args: { params: { clubId: string } }) => {
-      name: string;
-    };
-
-    expect(() => load({ params: { clubId: "no-such-club" } })).toThrow(/not found/i);
-    expect(load({ params: { clubId: "ai" } }).name).toBe("AI");
+  it("rejects an unknown club and loads a database-added club", async () => {
+    const load = ClubRoute.options.loader as (args: { params: { clubId: string }; context: { queryClient: QueryClient } }) => Promise<{ name: string }>;
+    const queryClient = new QueryClient();
+    const fetch = vi.spyOn(queryClient, "ensureQueryData");
+    fetch.mockResolvedValueOnce(null);
+    await expect(load({ params: { clubId: "no-such-club" }, context: { queryClient } })).rejects.toMatchObject({ isNotFound: true });
+    fetch.mockResolvedValueOnce({ ...clubs[0], slug: "robotics", name: "Robotics" });
+    expect((await load({ params: { clubId: "robotics" }, context: { queryClient } })).name).toBe("Robotics");
+    fetch.mockRestore();
+  });
+  it("matches the administrator page", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    expect(router.matchRoutes("/admin").at(-1)?.routeId).toBe("/admin");
   });
 });

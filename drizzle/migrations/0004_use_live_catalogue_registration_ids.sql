@@ -1,0 +1,2 @@
+ALTER TABLE public.club_registrations DROP CONSTRAINT club_registrations_club_slug_check;
+COMMENT ON CONSTRAINT club_registrations_club_slug_fkey ON public.club_registrations IS 'The live club catalogue validates all registration club IDs, including administrator-added clubs.';
