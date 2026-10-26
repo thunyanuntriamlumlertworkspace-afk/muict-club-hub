@@ -6,8 +6,9 @@ describe("Club registration", () => {
   it.each(["ai", "dev", "iot", "cyber", "badminton", "table-tennis", "japanese-society", "board-game", "media-and-entertainment", "speakers"])("accepts registration for %s", (clubSlug) => {
     expect(registrationSchema.parse({ clubSlug, displayName: "Student Example", studentId: "6620001" }).clubSlug).toBe(clubSlug);
   });
-  it("rejects registrations outside the available club list", () => {
-    expect(clubSlugSchema.safeParse("nonexistent-club").success).toBe(false);
+  it("accepts new club IDs and rejects invalid formats", () => {
+    expect(clubSlugSchema.safeParse("robotics").success).toBe(true);
+    expect(clubSlugSchema.safeParse("invalid/club").success).toBe(false);
     expect(clubs).toHaveLength(10);
   });
   it("requires student profile details for registration", () => {
