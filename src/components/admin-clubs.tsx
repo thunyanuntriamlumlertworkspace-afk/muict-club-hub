@@ -35,7 +35,7 @@ export function AdminClubs({ userId }: { userId: string }) {
     if (!editor) return;
     setBusy(true); setError(""); setNotice("");
     try {
-      await save({ data: { ...editor.club, founded: editor.club.founded || null } });
+      await save({ data: { ...editor.club, activities: editor.club.activities.map((activity) => activity.trim()).filter(Boolean), founded: editor.club.founded || null } });
       await refresh(); setEditor(null); setNotice("Club saved.");
     } catch (err) { setError(err instanceof Error ? err.message : "Could not save the club."); }
     finally { setBusy(false); }

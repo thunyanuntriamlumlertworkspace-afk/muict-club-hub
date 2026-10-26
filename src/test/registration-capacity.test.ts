@@ -59,7 +59,7 @@ describe("Database registration limits", () => {
   it("prevents reducing limits below occupied seats", async () => {
     await expect(db.exec(`UPDATE public.clubs SET capacity=34 WHERE slug='ai'`)).rejects.toThrow(/occupied seat/);
     await db.exec(`UPDATE public.clubs SET capacity=36 WHERE slug='ai'`);
-    const result = await db.query(`SELECT capacity FROM public.clubs WHERE slug='ai'`);
+    const result = await db.query<{ capacity: number }>(`SELECT capacity FROM public.clubs WHERE slug='ai'`);
     expect(result.rows[0]?.capacity).toBe(36);
   });
   it("includes empty clubs in availability", async () => {
@@ -80,7 +80,7 @@ describe("Database registration limits", () => {
       await db.exec(`SET test.user_id='${admin}'; INSERT INTO public.clubs (slug,name,tag) VALUES ('admin-test','Admin test','Tech'); UPDATE public.clubs SET capacity=4 WHERE slug='admin-test'; DELETE FROM public.clubs WHERE slug='admin-test';`);
       const rows = await db.query(`SELECT user_id FROM public.club_registrations WHERE club_slug='ai'`);
       expect(rows.rows).toHaveLength(35);
-      const club = await db.query(`SELECT name FROM public.clubs WHERE slug='dev'`);
+      const club = await db.query<{ name: string }>(`SELECT name FROM public.clubs WHERE slug='dev'`);
       expect(club.rows[0]?.name).toBe('Dev');
       await db.exec(`DELETE FROM public.club_registrations WHERE club_slug='robotics'`);
       const removed = await db.query(`SELECT id FROM public.club_registrations WHERE club_slug='robotics'`);
