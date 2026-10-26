@@ -6,12 +6,13 @@ import "@lovable.dev/cloud-auth-js/styles.css";
 import { useAccount } from "@/components/account-provider";
 import { Button } from "@/components/ui/button";
 import { emailSchema, passwordSchema } from "@/lib/registration-schema";
-import { getClub } from "@/lib/clubs";
+import { clubSlugSchema } from "@/lib/registration-schema";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>): { club?: string } => {
     const club = search['club'];
-    return typeof club === "string" && getClub(club) ? { club } : {};
+    const parsed = clubSlugSchema.safeParse(club);
+    return parsed.success ? { club: parsed.data } : {};
   },
   head: () => ({ meta: [
     { title: "Student Sign In — MUICT Clubs" },

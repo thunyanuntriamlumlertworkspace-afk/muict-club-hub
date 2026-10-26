@@ -1,17 +1,21 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute, notFound } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 
-import { getClub } from "@/lib/clubs";
+import { clubQueryOptions } from "@/lib/clubs.functions";
+import { CatalogueError, ClubNotFound } from "@/components/catalogue-error";
 import { ClubRegistration } from "@/components/club-registration";
 import { AccountActions } from "@/components/account-provider";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/clubs/$clubId")({
-  loader: ({ params }) => {
-    const club = getClub(params.clubId);
-    if (!club) throw new Error("Club not found");
+  loader: async ({ params, context }) => {
+    const club = await context.queryClient.ensureQueryData(clubQueryOptions(params.clubId));
+    if (!club) throw notFound();
     return club;
   },
+  errorComponent: CatalogueError,
+  notFoundComponent: ClubNotFound,
   head: ({ loaderData }) => ({
     meta: [
       { title: loaderData ? `${loaderData.name} Club — MUICT` : "Club — MUICT" },
@@ -35,7 +39,9 @@ export const Route = createFileRoute("/clubs/$clubId")({
 });
 
 function ClubDetail() {
-  const club = Route.useLoaderData();
+  const { clubId } = Route.useParams();
+  const { data: club } = useSuspenseQuery(clubQueryOptions(clubId));
+  if (!club) return <ClubNotFound />;
 
   return (
     <main className="min-h-screen bg-background">
@@ -90,7 +96,7 @@ function ClubDetail() {
           ))}
         </ul>
 
-        <ClubRegistration clubSlug={club.slug} clubName={club.name} />
+        <ClubRegistration key={club.slug} clubSlug={club.slug} clubName={club.name} capacity={club.capacity} />
       </section>
     </main>
   );

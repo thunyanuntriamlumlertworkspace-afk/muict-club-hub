@@ -23,7 +23,7 @@ export const registerForClub = createServerFn({ method: "POST" })
     });
     if (profileError) throw new Error("Could not save your student details. Please try again.");
     const { error } = await context.supabase.from("club_registrations").insert({ user_id: context.userId, club_slug: data.clubSlug });
-    if (error?.code === "P0001") throw new Error("This club is full. All 35 places have been taken.");
+    if (error?.code === "P0001") throw new Error(error.message.startsWith("Unknown club") ? "This club is no longer available." : "This club is full. All places have been taken.");
     if (error?.code === "23505") {
       const existing = await context.supabase.from("club_registrations").select("id").eq("user_id", context.userId).eq("club_slug", data.clubSlug).maybeSingle();
       if (existing.error || !existing.data) throw new Error("Another student just took this place. Please try again.");
